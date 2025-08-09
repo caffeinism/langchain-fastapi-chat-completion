@@ -1,9 +1,10 @@
 from abc import ABC, abstractmethod
 from typing import Iterable, List, Literal, Optional, Union
-from openai.types.beta.threads import MessageDeleted, MessageContentPartParam
-from openai.types.beta import thread_create_params
+
 from openai.pagination import SyncCursorPage
-from openai.types.beta.threads.message import Message, Attachment
+from openai.types.beta import thread_create_params
+from openai.types.beta.threads import MessageContentPartParam, MessageDeleted
+from openai.types.beta.threads.message import Attachment, Message
 from pydantic import BaseModel
 
 

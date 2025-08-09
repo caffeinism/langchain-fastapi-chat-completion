@@ -1,8 +1,7 @@
 from langchain_core.runnables.schema import StreamEvent
 from openai.types.beta import AssistantStreamEvent
-from openai.types.beta.threads import (
-    Run,
-)
+from openai.types.beta.threads import Run
+
 from langchain_openai_api_bridge.assistant.adapter.openai_event_factory import (
     create_thread_message_completed,
 )

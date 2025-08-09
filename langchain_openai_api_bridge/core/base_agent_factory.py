@@ -1,16 +1,18 @@
+import inspect
 from abc import ABC, abstractmethod
-from langchain_core.runnables import Runnable
-from langchain_openai_api_bridge.core.create_agent_dto import CreateAgentDto
+from contextlib import asynccontextmanager
 from typing import (
-    Awaitable,
-    Generator,
-    ContextManager,
     AsyncContextManager,
     AsyncGenerator,
+    Awaitable,
+    ContextManager,
+    Generator,
     Union,
 )
-import inspect
-from contextlib import asynccontextmanager
+
+from langchain_core.runnables import Runnable
+
+from langchain_openai_api_bridge.core.create_agent_dto import CreateAgentDto
 
 PotentiallyRunnable = Union[
     Runnable,

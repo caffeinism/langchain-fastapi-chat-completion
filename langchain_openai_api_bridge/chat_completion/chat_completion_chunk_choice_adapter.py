@@ -1,10 +1,16 @@
 from typing import Optional
+
 from langchain_core.runnables.schema import StreamEvent
+from openai.types.chat.chat_completion_chunk import (
+    ChatCompletionChunk,
+    Choice,
+    ChoiceDelta,
+    ChoiceDeltaFunctionCall,
+)
 
 from langchain_openai_api_bridge.chat_completion.chat_completion_chunk_object_factory import (
     create_chat_completion_chunk_object,
 )
-from openai.types.chat.chat_completion_chunk import ChatCompletionChunk, Choice, ChoiceDelta, ChoiceDeltaFunctionCall
 
 
 def to_openai_chat_message(

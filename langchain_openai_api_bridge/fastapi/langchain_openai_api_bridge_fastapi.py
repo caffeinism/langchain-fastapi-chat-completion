@@ -1,5 +1,7 @@
 from typing import Callable, Optional, Union
+
 from fastapi import FastAPI
+from langchain_core.runnables import Runnable
 
 from langchain_openai_api_bridge.assistant.adapter.container import (
     register_assistant_adapter,
@@ -36,7 +38,6 @@ from langchain_openai_api_bridge.fastapi.chat_completion_router import (
 from langchain_openai_api_bridge.fastapi.internal_agent_factory import (
     InternalAgentFactory,
 )
-from langchain_core.runnables import Runnable
 
 
 class LangchainOpenaiApiBridgeFastAPI(LangchainOpenaiApiBridge):
@@ -97,7 +98,9 @@ class LangchainOpenaiApiBridgeFastAPI(LangchainOpenaiApiBridge):
 
         self.app.include_router(assistant_router)
 
-    def bind_openai_chat_completion(self, prefix: str = "", event_adapter: callable = lambda event: None) -> None:
+    def bind_openai_chat_completion(
+        self, prefix: str = "", event_adapter: callable = lambda event: None
+    ) -> None:
         chat_completion_router = create_openai_chat_completion_router(
             self.tiny_di_container, prefix=prefix, event_adapter=event_adapter
         )

@@ -1,12 +1,14 @@
-from openai.types.beta.threads import Run
 import uuid
 from typing import List, Literal, Optional
+
+from openai.pagination import SyncCursorPage
+from openai.types.beta.threads import Run
+from openai.types.beta.threads.run import AssistantTool, RequiredAction, RunStatus
+
 from langchain_openai_api_bridge.assistant.openai_run_factory import create_run
 from langchain_openai_api_bridge.assistant.repository.run_repository import (
     RunRepository,
 )
-from openai.types.beta.threads.run import RequiredAction, RunStatus, AssistantTool
-from openai.pagination import SyncCursorPage
 
 
 class InMemoryRunRepository(RunRepository):

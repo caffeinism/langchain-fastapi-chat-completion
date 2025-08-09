@@ -1,6 +1,4 @@
-from .chat_completion import (
-    OpenAIChatCompletionRequest,
-)
+from .chat_completion import OpenAIChatCompletionRequest
 
 __all__ = [
     "OpenAIChatCompletionRequest",

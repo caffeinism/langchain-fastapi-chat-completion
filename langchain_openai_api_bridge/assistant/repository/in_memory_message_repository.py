@@ -1,20 +1,16 @@
-from typing import Iterable, List, Literal, Optional, Union
 import uuid
+from typing import Iterable, List, Literal, Optional, Union
+
+from openai.pagination import SyncCursorPage
+from openai.types.beta import thread_create_params
+from openai.types.beta.threads import Message, MessageContentPartParam, MessageDeleted
+from pydantic import BaseModel
 
 from langchain_openai_api_bridge.assistant.adapter.openai_message_factory import (
     create_message,
 )
-from pydantic import BaseModel
-from .message_repository import (
-    MessageRepository,
-)
-from openai.types.beta import thread_create_params
-from openai.types.beta.threads import (
-    Message,
-    MessageDeleted,
-    MessageContentPartParam,
-)
-from openai.pagination import SyncCursorPage
+
+from .message_repository import MessageRepository
 
 
 class InMemoryMessageRepository(MessageRepository):

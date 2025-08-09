@@ -1,7 +1,8 @@
 import time
 from typing import List, Optional
+
 from openai.types.beta.threads import Run
-from openai.types.beta.threads.run import RequiredAction, RunStatus, AssistantTool
+from openai.types.beta.threads.run import AssistantTool, RequiredAction, RunStatus
 
 
 def create_run(

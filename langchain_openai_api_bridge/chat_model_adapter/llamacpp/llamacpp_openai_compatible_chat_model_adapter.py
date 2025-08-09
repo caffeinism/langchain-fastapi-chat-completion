@@ -1,4 +1,5 @@
 from typing import Dict, Union
+
 from langchain_core.messages import BaseMessage
 
 from langchain_openai_api_bridge.chat_model_adapter.base_openai_compatible_chat_model_adapter import (

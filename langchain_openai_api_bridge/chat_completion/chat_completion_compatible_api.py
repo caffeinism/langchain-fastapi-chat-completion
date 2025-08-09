@@ -1,6 +1,9 @@
-from typing import AsyncIterator, List, Optional, AsyncContextManager
+from typing import AsyncContextManager, AsyncIterator, List, Optional
+
 from langchain_core.runnables import Runnable
 from langgraph.graph.state import CompiledStateGraph
+from openai.types.chat import ChatCompletionMessage
+
 from langchain_openai_api_bridge.chat_completion.langchain_invoke_adapter import (
     LangchainInvokeAdapter,
 )
@@ -8,7 +11,6 @@ from langchain_openai_api_bridge.chat_completion.langchain_stream_adapter import
     LangchainStreamAdapter,
 )
 from langchain_openai_api_bridge.core.utils.pydantic_async_iterator import ato_dict
-from openai.types.chat import ChatCompletionMessage
 
 
 class ChatCompletionCompatibleAPI:
@@ -39,7 +41,9 @@ class ChatCompletionCompatibleAPI:
         self.agent = agent
         self.event_adapter = event_adapter
 
-    async def astream(self, messages: List[ChatCompletionMessage]) -> AsyncIterator[dict]:
+    async def astream(
+        self, messages: List[ChatCompletionMessage]
+    ) -> AsyncIterator[dict]:
         async with self.agent as runnable:
             input = self.__to_input(runnable, messages)
             astream_event = runnable.astream_events(
@@ -47,7 +51,9 @@ class ChatCompletionCompatibleAPI:
                 version="v2",
             )
             async for it in ato_dict(
-                self.stream_adapter.ato_chat_completion_chunk_stream(astream_event, event_adapter=self.event_adapter)
+                self.stream_adapter.ato_chat_completion_chunk_stream(
+                    astream_event, event_adapter=self.event_adapter
+                )
             ):
                 yield it
 

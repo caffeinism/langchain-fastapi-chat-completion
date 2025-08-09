@@ -1,6 +1,8 @@
 from typing import AsyncIterator
+
 from langchain_core.runnables.schema import StreamEvent
 from openai.types.beta import AssistantStreamEvent
+
 from langchain_openai_api_bridge.assistant.adapter.on_chat_model_end_handler import (
     OnChatModelEndHandler,
 )

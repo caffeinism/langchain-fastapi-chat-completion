@@ -1,4 +1,5 @@
 from typing import Literal, Optional
+
 from fastapi import APIRouter, Header
 
 from langchain_openai_api_bridge.assistant.assistant_message_service import (
@@ -23,10 +24,10 @@ from langchain_openai_api_bridge.assistant.create_thread_runs_api_dto import (
 from langchain_openai_api_bridge.assistant.repository.run_repository import (
     RunRepository,
 )
+from langchain_openai_api_bridge.core.utils.tiny_di_container import TinyDIContainer
 from langchain_openai_api_bridge.fastapi.internal_agent_factory import (
     InternalAgentFactory,
 )
-from langchain_openai_api_bridge.core.utils.tiny_di_container import TinyDIContainer
 from langchain_openai_api_bridge.fastapi.token_getter import get_bearer_token
 
 

@@ -1,11 +1,10 @@
 from typing import Optional
+
 from openai.types.beta.assistant_stream_event import (
-    ThreadRunCreated,
     ThreadRunCompleted,
+    ThreadRunCreated,
 )
-from openai.types.beta.threads import (
-    Run,
-)
+from openai.types.beta.threads import Run
 
 from langchain_openai_api_bridge.assistant.repository.run_repository import (
     RunRepository,

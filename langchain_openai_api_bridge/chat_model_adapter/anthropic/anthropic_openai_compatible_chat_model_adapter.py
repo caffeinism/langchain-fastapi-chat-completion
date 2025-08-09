@@ -1,5 +1,7 @@
 from typing import Dict, Union
+
 from langchain_core.messages import BaseMessage
+
 from langchain_openai_api_bridge.chat_model_adapter.url_extractor import (
     extract_base64_url,
 )

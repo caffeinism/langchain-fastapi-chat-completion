@@ -1,4 +1,5 @@
 from typing import List, Optional
+
 from openai.types.beta import thread_create_params
 from pydantic import BaseModel
 

@@ -1,12 +1,14 @@
 from typing import Literal, Optional
+
+from openai.pagination import SyncCursorPage
 from openai.types.beta import Thread, ThreadDeleted
+
 from langchain_openai_api_bridge.assistant.create_thread_api_dto import CreateThreadDto
 from langchain_openai_api_bridge.assistant.repository import (
-    RunRepository,
     MessageRepository,
+    RunRepository,
     ThreadRepository,
 )
-from openai.pagination import SyncCursorPage
 
 
 class AssistantThreadService:

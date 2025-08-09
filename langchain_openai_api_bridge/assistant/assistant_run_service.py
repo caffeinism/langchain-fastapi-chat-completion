@@ -1,15 +1,16 @@
-from typing import AsyncIterator, AsyncContextManager
+from typing import AsyncContextManager, AsyncIterator
+
+from langchain_core.runnables import Runnable
 from openai.types.beta import AssistantStreamEvent
+
 from langchain_openai_api_bridge.assistant.adapter.langgraph_event_to_openai_assistant_event_stream import (
     LanggraphEventToOpenAIAssistantEventStream,
 )
-from langchain_openai_api_bridge.assistant.create_thread_runs_api_dto import (
-    ThreadRunsDto,
-)
-from langchain_core.runnables import Runnable
-
 from langchain_openai_api_bridge.assistant.adapter.thread_to_langchain_input_messages_service import (
     ThreadToLangchainInputMessagesService,
+)
+from langchain_openai_api_bridge.assistant.create_thread_runs_api_dto import (
+    ThreadRunsDto,
 )
 from langchain_openai_api_bridge.assistant.repository.run_repository import (
     RunRepository,

@@ -1,6 +1,7 @@
 from typing import AsyncIterator
-from starlette.responses import StreamingResponse
+
 from openai.types.beta import AssistantStreamEvent
+from starlette.responses import StreamingResponse
 
 
 class AssistantStreamEventAdapter:

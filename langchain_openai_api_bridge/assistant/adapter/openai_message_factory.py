@@ -1,17 +1,19 @@
 import time
 from typing import Iterable, List, Literal, Optional, TypedDict, Union
+
 from openai.types.beta.threads import (
-    Message,
-    MessageDelta,
-    MessageContentPartParam,
     AnnotationDelta,
-    TextDeltaBlock,
-    TextDelta,
+    Message,
     MessageContent,
-    TextContentBlock,
+    MessageContentPartParam,
+    MessageDelta,
     Text,
+    TextContentBlock,
+    TextDelta,
+    TextDeltaBlock,
 )
 from pydantic import BaseModel
+
 from langchain_openai_api_bridge.assistant.adapter.openai_message_content_adapter import (
     to_openai_message_content_list,
 )

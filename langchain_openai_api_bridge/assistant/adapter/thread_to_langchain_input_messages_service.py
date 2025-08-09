@@ -1,11 +1,13 @@
 from typing import List
+
+from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
+
 from langchain_openai_api_bridge.assistant.adapter.langchain_input_content_adapter import (
     to_langchain_input_content,
 )
 from langchain_openai_api_bridge.assistant.repository.message_repository import (
     MessageRepository,
 )
-from langchain_core.messages import BaseMessage, AIMessage, HumanMessage
 
 
 class ThreadToLangchainInputMessagesService:

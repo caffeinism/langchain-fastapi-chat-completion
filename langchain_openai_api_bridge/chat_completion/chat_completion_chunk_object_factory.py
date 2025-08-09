@@ -41,5 +41,9 @@ def create_final_chat_completion_chunk_object(
         id=id,
         model=model,
         system_fingerprint=system_fingerprint,
-        choices=[create_final_chat_completion_chunk_choice(index=0, finish_reason=finish_reason)],
+        choices=[
+            create_final_chat_completion_chunk_choice(
+                index=0, finish_reason=finish_reason
+            )
+        ],
     )

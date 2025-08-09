@@ -1,8 +1,9 @@
-from openai.types.beta.threads import Run
 from abc import ABC, abstractmethod
 from typing import List, Literal, Optional
-from openai.types.beta.threads.run import RequiredAction, RunStatus, AssistantTool
+
 from openai.pagination import SyncCursorPage
+from openai.types.beta.threads import Run
+from openai.types.beta.threads.run import AssistantTool, RequiredAction, RunStatus
 
 
 class RunRepository(ABC):

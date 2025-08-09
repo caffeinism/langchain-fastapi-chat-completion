@@ -1,6 +1,7 @@
 from typing import Literal
-from openai.types.beta.threads import Message, MessageDeleted
 
+from openai.pagination import SyncCursorPage
+from openai.types.beta.threads import Message, MessageDeleted
 
 from langchain_openai_api_bridge.assistant.create_thread_message_api_dto import (
     CreateThreadMessageDto,
@@ -8,7 +9,6 @@ from langchain_openai_api_bridge.assistant.create_thread_message_api_dto import 
 from langchain_openai_api_bridge.assistant.repository.message_repository import (
     MessageRepository,
 )
-from openai.pagination import SyncCursorPage
 
 
 class AssistantMessageService:

@@ -1,5 +1,5 @@
-from typing import Type, TypeVar, Dict, Any, Union, Callable
 import inspect
+from typing import Any, Callable, Dict, Type, TypeVar, Union
 
 T = TypeVar("T")
 

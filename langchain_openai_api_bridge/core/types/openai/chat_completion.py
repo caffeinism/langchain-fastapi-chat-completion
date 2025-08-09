@@ -1,11 +1,13 @@
 from typing import List, Optional
-from pydantic import BaseModel
+
 from openai.types.chat import (
+    ChatCompletionMessageParam,
     ChatCompletionToolChoiceOptionParam,
     ChatCompletionToolParam,
-    ChatCompletionMessageParam,
 )
 from openai.types.shared.reasoning_effort import ReasoningEffort
+from pydantic import BaseModel
+
 
 class OpenAIChatCompletionRequest(BaseModel):
     model: str

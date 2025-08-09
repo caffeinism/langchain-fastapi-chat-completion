@@ -1,13 +1,16 @@
+from typing import AsyncContextManager
+
+from langchain_core.runnables import Runnable
+
 from langchain_openai_api_bridge.assistant.create_thread_runs_api_dto import (
     ThreadRunsDto,
 )
-from langchain_openai_api_bridge.core.base_agent_factory import BaseAgentFactory, PotentiallyRunnable, wrap_agent
-from langchain_openai_api_bridge.core.create_agent_dto import CreateAgentDto
-from langchain_core.runnables import Runnable
-
-from typing import (
-    AsyncContextManager,
+from langchain_openai_api_bridge.core.base_agent_factory import (
+    BaseAgentFactory,
+    PotentiallyRunnable,
+    wrap_agent,
 )
+from langchain_openai_api_bridge.core.create_agent_dto import CreateAgentDto
 
 
 class InternalAgentFactory:

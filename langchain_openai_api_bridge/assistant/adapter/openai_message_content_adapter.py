@@ -1,19 +1,20 @@
 from typing import Iterable, List, Type, Union
+
 from openai import BaseModel
 from openai.types.beta.threads import (
-    MessageContentPartParam,
-    TextContentBlock,
     ImageFile,
-    ImageURL,
     ImageFileContentBlock,
+    ImageURL,
     ImageURLContentBlock,
+    MessageContentPartParam,
     Text,
+    TextContentBlock,
 )
 from openai.types.beta.threads.message import MessageContent
 
 
 def to_openai_message_content(
-    content: Union[str, MessageContentPartParam] = ""
+    content: Union[str, MessageContentPartParam] = "",
 ) -> MessageContent:
 
     if isinstance(content, str):
@@ -49,7 +50,7 @@ def to_openai_message_content(
 
 
 def to_openai_message_content_list(
-    content: Union[str, Iterable[MessageContentPartParam], None] = None
+    content: Union[str, Iterable[MessageContentPartParam], None] = None,
 ) -> List[MessageContent]:
     if content is None:
         return []

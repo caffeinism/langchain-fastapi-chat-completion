@@ -1,32 +1,30 @@
 import json
 import time
 from typing import Any, Literal, Optional, Union
+
+from langchain_core.messages.tool import ToolMessage
 from openai.types.beta.assistant_stream_event import (
+    MessageDeltaEvent,
+    RunStep,
+    ThreadMessageCompleted,
     ThreadMessageCreated,
     ThreadMessageDelta,
-    MessageDeltaEvent,
-    ThreadMessageCompleted,
-    ThreadRunStepCreated,
     ThreadRunStepCompleted,
+    ThreadRunStepCreated,
     ThreadRunStepDelta,
-    RunStep,
 )
-from langchain_core.messages.tool import ToolMessage
-
-from openai.types.beta.threads import (
-    Message,
-)
+from openai.types.beta.threads import Message
 from openai.types.beta.threads.runs import (
     FunctionToolCall,
     ToolCallsStepDetails,
+    function_tool_call,
 )
-from openai.types.beta.threads.runs import function_tool_call
+from pydantic import BaseModel
 
 from langchain_openai_api_bridge.assistant.adapter.openai_message_factory import (
     FromLanggraphMessageChunkContent,
     create_text_message_delta,
 )
-from pydantic import BaseModel
 
 
 def create_thread_message_created_event(message: Message) -> ThreadMessageCreated:

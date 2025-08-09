@@ -1,4 +1,5 @@
 from typing import Iterable, Literal, Optional, Union
+
 from openai.types.beta.threads import MessageContentPartParam, message_create_params
 from pydantic import BaseModel
 

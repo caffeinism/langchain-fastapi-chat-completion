@@ -1,6 +1,11 @@
 from typing import Callable
+
 from langchain_core.runnables import Runnable
-from langchain_openai_api_bridge.core.base_agent_factory import BaseAgentFactory, PotentiallyRunnable
+
+from langchain_openai_api_bridge.core.base_agent_factory import (
+    BaseAgentFactory,
+    PotentiallyRunnable,
+)
 from langchain_openai_api_bridge.core.create_agent_dto import CreateAgentDto
 
 
@@ -11,7 +16,5 @@ class FunctionAgentFactory(BaseAgentFactory):
     ) -> None:
         self.fn = fn
 
-    def create_agent(
-        self, dto: CreateAgentDto
-    ) -> PotentiallyRunnable:
+    def create_agent(self, dto: CreateAgentDto) -> PotentiallyRunnable:
         return self.fn(dto)

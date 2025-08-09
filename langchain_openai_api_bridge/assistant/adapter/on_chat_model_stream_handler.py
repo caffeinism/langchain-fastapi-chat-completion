@@ -1,8 +1,10 @@
 import copy
+
 from langchain_core.runnables.schema import StreamEvent
 from openai.types.beta import AssistantStreamEvent
 from openai.types.beta.threads import Run
 from openai.types.beta.threads.message import Message
+
 from langchain_openai_api_bridge.assistant.adapter.openai_event_factory import (
     FromLanggraphMessageChunkContent,
     create_text_thread_message_delta,

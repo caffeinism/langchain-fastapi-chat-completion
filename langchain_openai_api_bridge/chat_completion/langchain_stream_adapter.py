@@ -1,6 +1,8 @@
-from typing import AsyncIterator
 import uuid
+from typing import AsyncIterator
+
 from langchain_core.runnables.schema import StreamEvent
+from openai.types.chat.chat_completion_chunk import ChatCompletionChunk
 
 from langchain_openai_api_bridge.chat_completion.chat_completion_chunk_choice_adapter import (
     to_openai_chat_completion_chunk_object,
@@ -8,7 +10,6 @@ from langchain_openai_api_bridge.chat_completion.chat_completion_chunk_choice_ad
 from langchain_openai_api_bridge.chat_completion.chat_completion_chunk_object_factory import (
     create_final_chat_completion_chunk_object,
 )
-from openai.types.chat.chat_completion_chunk import ChatCompletionChunk
 
 
 class LangchainStreamAdapter:
@@ -41,11 +42,16 @@ class LangchainStreamAdapter:
                 )
                 role = None
                 yield chat_completion_chunk
-                is_function_call = is_function_call or any(choice.delta.function_call for choice in chat_completion_chunk.choices)
+                is_function_call = is_function_call or any(
+                    choice.delta.function_call
+                    for choice in chat_completion_chunk.choices
+                )
             elif kind == "on_chat_model_end":
                 is_function_call_prev, is_function_call = is_function_call, False
 
         stop_chunk = create_final_chat_completion_chunk_object(
-            id=id, model=self.llm_model, finish_reason="tool_calls" if is_function_call_prev else "stop"
+            id=id,
+            model=self.llm_model,
+            finish_reason="tool_calls" if is_function_call_prev else "stop",
         )
         yield stop_chunk

@@ -9,9 +9,9 @@ class ChatCompletionObjectFactory:
         id: str,
         model: str,
         choices: List[Choice] = [],
-        usage: Optional[
-            CompletionUsage
-        ] = CompletionUsage(completion_tokens=-1, prompt_tokens=-1, total_tokens=-1),
+        usage: Optional[CompletionUsage] = CompletionUsage(
+            completion_tokens=-1, prompt_tokens=-1, total_tokens=-1
+        ),
         object: str = "chat.completion",
         system_fingerprint: str = "",
         created: int = None,

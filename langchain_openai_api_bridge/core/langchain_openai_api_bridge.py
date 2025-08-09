@@ -1,10 +1,12 @@
 import inspect
 from typing import Callable, Optional, Union
+
+from langchain_core.runnables import Runnable
+
 from langchain_openai_api_bridge.core.base_agent_factory import BaseAgentFactory
 from langchain_openai_api_bridge.core.create_agent_dto import CreateAgentDto
 from langchain_openai_api_bridge.core.function_agent_factory import FunctionAgentFactory
 from langchain_openai_api_bridge.core.utils import TinyDIContainer
-from langchain_core.runnables import Runnable
 
 
 class LangchainOpenaiApiBridge:

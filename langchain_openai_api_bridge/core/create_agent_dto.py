@@ -1,7 +1,12 @@
 from typing import Optional
-from pydantic import BaseModel
-from openai.types.chat import ChatCompletionToolChoiceOptionParam, ChatCompletionToolParam
+
+from openai.types.chat import (
+    ChatCompletionToolChoiceOptionParam,
+    ChatCompletionToolParam,
+)
 from openai.types.shared.reasoning_effort import ReasoningEffort
+from pydantic import BaseModel
+
 
 class CreateAgentDto(BaseModel):
     api_key: Optional[str] = None

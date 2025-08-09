@@ -1,7 +1,8 @@
-from typing import Literal, Optional
 from abc import ABC, abstractmethod
-from openai.types.beta import Thread, ThreadDeleted
+from typing import Literal, Optional
+
 from openai.pagination import SyncCursorPage
+from openai.types.beta import Thread, ThreadDeleted
 from pydantic import BaseModel
 
 
