@@ -5,13 +5,14 @@ from openai.types.chat import (
     ChatCompletionToolParam,
     ChatCompletionMessageParam,
 )
-
+from openai.types.shared.reasoning_effort import ReasoningEffort
 
 class OpenAIChatCompletionRequest(BaseModel):
     model: str
     messages: List[ChatCompletionMessageParam]
     max_tokens: Optional[int] = 512
-    temperature: Optional[float] = 0.1
+    temperature: Optional[float] = 1
     stream: Optional[bool] = False
     tools: list[ChatCompletionToolParam] = []
     tool_choice: ChatCompletionToolChoiceOptionParam = "none"
+    reasoning_effort: ReasoningEffort | None = None

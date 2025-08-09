@@ -29,9 +29,10 @@ def create_chat_completion_router(
         create_agent_dto = CreateAgentDto(
             model=request.model,
             api_key=api_key,
-            temperature=request.temperature,
+            request=request,
             tools=request.tools,
             tool_choice=request.tool_choice,
+            reasoning_effort=request.reasoning_effort,
         )
 
         agent = agent_factory.create_agent_with_async_context(dto=create_agent_dto)
