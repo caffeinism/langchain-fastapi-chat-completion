@@ -18,10 +18,11 @@ from langchain_fastapi_chat_completion.core.utils.tiny_di_container import (
 
 
 def create_chat_completion_router(
+    path: str,
     tiny_di_container: TinyDIContainer,
     event_adapter: callable = lambda event: None,
 ):
-    chat_completion_router = APIRouter(prefix="/chat")
+    chat_completion_router = APIRouter()
     agent_factory = tiny_di_container.resolve(BaseAgentFactory)
 
     for key, value in inspect.signature(agent_factory.create_agent).parameters.items():
@@ -53,20 +54,20 @@ def create_chat_completion_router(
     sig = inspect.signature(_completions)
     _completions.__signature__ = sig.replace(return_annotation=Response)
 
-    chat_completion_router.post("/completions")(_completions)
+    chat_completion_router.post(path)(_completions)
 
     return chat_completion_router
 
 
 def create_openai_chat_completion_router(
     tiny_di_container: TinyDIContainer,
-    prefix: str = "",
+    path: str = "",
     event_adapter: callable = lambda event: None,
 ):
     router = create_chat_completion_router(
-        tiny_di_container=tiny_di_container, event_adapter=event_adapter
+        path=path, tiny_di_container=tiny_di_container, event_adapter=event_adapter
     )
-    open_ai_router = APIRouter(prefix=f"{prefix}/openai/v1")
+    open_ai_router = APIRouter()
     open_ai_router.include_router(router)
 
     return open_ai_router

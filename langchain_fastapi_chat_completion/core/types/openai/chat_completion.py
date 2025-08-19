@@ -26,12 +26,12 @@ from pydantic import BaseModel
 
 
 class OpenAIChatCompletionRequest(BaseModel):
-    messages: Iterable[ChatCompletionMessageParam]
+    messages: list[ChatCompletionMessageParam]
     model: Union[str, ChatModel]
     audio: Optional[ChatCompletionAudioParam] | None = None
     frequency_penalty: Optional[float] | None = None
     function_call: completion_create_params.FunctionCall | None = None
-    functions: Iterable[completion_create_params.Function] | None = None
+    functions: list[completion_create_params.Function] | None = None
     logit_bias: Optional[Dict[str, int]] | None = None
     logprobs: Optional[bool] | None = None
     max_completion_tokens: Optional[int] | None = None
@@ -56,7 +56,7 @@ class OpenAIChatCompletionRequest(BaseModel):
     stream_options: Optional[ChatCompletionStreamOptionsParam] | None = None
     temperature: Optional[float] | None = None
     tool_choice: ChatCompletionToolChoiceOptionParam | None = None
-    tools: Iterable[ChatCompletionToolParam] | None = None
+    tools: list[ChatCompletionToolParam] | None = None
     top_logprobs: Optional[int] | None = None
     top_p: Optional[float] | None = None
     user: str | None = None

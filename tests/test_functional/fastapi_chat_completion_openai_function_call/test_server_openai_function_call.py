@@ -13,7 +13,7 @@ test_api = TestClient(app)
 @pytest.fixture
 def openai_client():
     return OpenAI(
-        base_url="http://testserver/my-custom-path/openai/v1",
+        base_url="http://testserver/my-custom-path",
         http_client=test_api,
     )
 

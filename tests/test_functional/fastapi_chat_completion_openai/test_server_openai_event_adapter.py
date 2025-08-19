@@ -9,7 +9,7 @@ test_api = TestClient(app)
 @pytest.fixture
 def openai_client_custom_events():
     return OpenAI(
-        base_url="http://testserver/my-custom-events-path/openai/v1",
+        base_url="http://testserver/my-custom-events-path",
         http_client=test_api,
     )
 

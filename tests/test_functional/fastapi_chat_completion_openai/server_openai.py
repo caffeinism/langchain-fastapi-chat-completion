@@ -38,7 +38,7 @@ def create_agent(dto: CreateAgentDto):
 
 
 bridge = LangchainOpenaiApiBridgeFastAPI(app=app, agent_factory_provider=create_agent)
-bridge.bind_openai_chat_completion(prefix="/my-custom-path")
+bridge.bind_openai_chat_completion(path="/my-custom-path/chat/completions")
 
 if __name__ == "__main__":
     uvicorn.run(app, host="localhost")

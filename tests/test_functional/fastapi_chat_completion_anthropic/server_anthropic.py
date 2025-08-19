@@ -31,7 +31,7 @@ app.add_middleware(
 bridge = LangchainOpenaiApiBridgeFastAPI(
     app=app, agent_factory_provider=lambda: MyAnthropicAgentFactory()
 )
-bridge.bind_openai_chat_completion(prefix="/my-custom-path/anthropic")
+bridge.bind_openai_chat_completion(path="/my-custom-path/anthropic/chat/completions")
 
 if __name__ == "__main__":
     uvicorn.run(app, host="localhost")

@@ -29,7 +29,7 @@ app.add_middleware(
 bridge = LangchainOpenaiApiBridgeFastAPI(
     app=app, agent_factory_provider=lambda: MyOpenAIMultiAgentFactory()
 )
-bridge.bind_openai_chat_completion()
+bridge.bind_openai_chat_completion(path="/chat/completions")
 
 if __name__ == "__main__":
     uvicorn.run(app, host="localhost")

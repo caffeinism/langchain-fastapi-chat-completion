@@ -48,7 +48,7 @@ def event_adapter(event):
 
 
 bridge.bind_openai_chat_completion(
-    prefix="/my-custom-events-path", event_adapter=event_adapter
+    path="/my-custom-events-path/chat/completions", event_adapter=event_adapter
 )
 
 if __name__ == "__main__":

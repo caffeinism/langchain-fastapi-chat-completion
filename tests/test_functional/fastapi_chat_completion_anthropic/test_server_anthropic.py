@@ -9,7 +9,7 @@ test_api = TestClient(app)
 @pytest.fixture
 def openai_client():
     return OpenAI(
-        base_url="http://testserver/my-custom-path/anthropic/openai/v1",
+        base_url="http://testserver/my-custom-path/anthropic",
         http_client=test_api,
     )
 
