@@ -40,15 +40,21 @@ def create_agent(dto: CreateAgentDto):
 bridge = LangchainOpenaiApiBridgeFastAPI(app=app, agent_factory_provider=create_agent)
 
 
-def event_adapter(event):
-    kind = event["event"]
-    match kind:
-        case "on_chat_model_stream":
-            return event
+def astream_events_adapter(astream_events):
+    async def _astream_events(
+        input,
+        config=None,
+        **kwargs,
+    ):
+        async for event in astream_events(input, config, **kwargs):
+            yield event
+
+    return _astream_events
 
 
 bridge.bind_openai_chat_completion(
-    path="/my-custom-events-path/chat/completions", event_adapter=event_adapter
+    path="/my-custom-events-path/chat/completions",
+    astream_events_adapter=astream_events_adapter,
 )
 
 if __name__ == "__main__":

@@ -1,5 +1,6 @@
 import inspect
 from functools import wraps
+from typing import Callable
 
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse, Response
@@ -20,7 +21,8 @@ from langchain_fastapi_chat_completion.core.utils.tiny_di_container import (
 def create_chat_completion_router(
     path: str,
     tiny_di_container: TinyDIContainer,
-    event_adapter: callable = lambda event: None,
+    ainvoke_adapter: Callable = lambda x: x,
+    astream_events_adapter: Callable = lambda x: x,
 ):
     chat_completion_router = APIRouter()
     agent_factory = tiny_di_container.resolve(BaseAgentFactory)
@@ -38,7 +40,10 @@ def create_chat_completion_router(
         agent = agent_factory.create_agent_with_async_context(**kwargs)
 
         adapter = ChatCompletionCompatibleAPI.from_agent(
-            agent, dto.request.model, event_adapter=event_adapter
+            agent,
+            dto.request.model,
+            ainvoke_adapter=ainvoke_adapter,
+            astream_events_adapter=astream_events_adapter,
         )
 
         response_factory = HttpStreamResponseAdapter()
@@ -62,10 +67,14 @@ def create_chat_completion_router(
 def create_openai_chat_completion_router(
     tiny_di_container: TinyDIContainer,
     path: str = "",
-    event_adapter: callable = lambda event: None,
+    ainvoke_adapter: Callable = lambda x: x,
+    astream_events_adapter: Callable = lambda x: x,
 ):
     router = create_chat_completion_router(
-        path=path, tiny_di_container=tiny_di_container, event_adapter=event_adapter
+        path=path,
+        tiny_di_container=tiny_di_container,
+        ainvoke_adapter=ainvoke_adapter,
+        astream_events_adapter=astream_events_adapter,
     )
     open_ai_router = APIRouter()
     open_ai_router.include_router(router)

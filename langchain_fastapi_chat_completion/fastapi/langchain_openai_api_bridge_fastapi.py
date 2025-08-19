@@ -27,12 +27,16 @@ class LangchainOpenaiApiBridgeFastAPI(LangchainOpenaiApiBridge):
         self.app = app
 
     def bind_openai_chat_completion(
-        self, path: str, event_adapter: callable = lambda event: None
+        self,
+        path: str,
+        ainvoke_adapter: Callable = lambda x: x,
+        astream_events_adapter: Callable = lambda x: x,
     ) -> None:
         chat_completion_router = create_openai_chat_completion_router(
             path=path,
             tiny_di_container=self.tiny_di_container,
-            event_adapter=event_adapter,
+            ainvoke_adapter=ainvoke_adapter,
+            astream_events_adapter=astream_events_adapter,
         )
 
         self.app.include_router(chat_completion_router)

@@ -21,7 +21,6 @@ class LangchainStreamAdapter:
         self,
         astream_event: AsyncIterator[StreamEvent],
         id: str = "",
-        event_adapter=lambda event: None,
     ) -> AsyncIterator[ChatCompletionChunk]:
         if id == "":
             id = str(uuid.uuid4())
@@ -29,10 +28,9 @@ class LangchainStreamAdapter:
         is_function_call_prev = is_function_call = False
         role = "assistant"
         async for event in astream_event:
-            custom_event = event_adapter(event)
-            event_to_process = custom_event if custom_event is not None else event
+            event_to_process = event
             kind = event_to_process["event"]
-            if kind == "on_chat_model_stream" or custom_event is not None:
+            if kind == "on_chat_model_stream":
                 chat_completion_chunk = to_openai_chat_completion_chunk_object(
                     event=event_to_process,
                     id=id,

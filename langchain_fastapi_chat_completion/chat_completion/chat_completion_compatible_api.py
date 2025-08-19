@@ -1,4 +1,4 @@
-from typing import AsyncContextManager, AsyncIterator, List, Optional
+from typing import AsyncContextManager, AsyncIterator, Callable, List, Optional
 
 from langchain_core.runnables import Runnable
 from langgraph.graph.state import CompiledStateGraph
@@ -22,13 +22,15 @@ class ChatCompletionCompatibleAPI:
         agent: AsyncContextManager[Runnable],
         llm_model: str,
         system_fingerprint: Optional[str] = "",
-        event_adapter: callable = lambda event: None,
+        ainvoke_adapter: Callable = lambda x: x,
+        astream_events_adapter: Callable = lambda x: x,
     ):
         return ChatCompletionCompatibleAPI(
             LangchainStreamAdapter(llm_model, system_fingerprint),
             LangchainInvokeAdapter(llm_model, system_fingerprint),
             agent,
-            event_adapter,
+            ainvoke_adapter,
+            astream_events_adapter,
         )
 
     def __init__(
@@ -36,33 +38,33 @@ class ChatCompletionCompatibleAPI:
         stream_adapter: LangchainStreamAdapter,
         invoke_adapter: LangchainInvokeAdapter,
         agent: AsyncContextManager[Runnable],
-        event_adapter: callable = lambda event: None,
+        ainvoke_adapter: Callable = lambda x: x,
+        astream_events_adapter: Callable = lambda x: x,
     ) -> None:
         self.stream_adapter = stream_adapter
         self.invoke_adapter = invoke_adapter
         self.agent = agent
-        self.event_adapter = event_adapter
+        self.ainvoke_adapter = ainvoke_adapter
+        self.astream_events_adapter = astream_events_adapter
 
     async def astream(
         self, messages: List[ChatCompletionMessage]
     ) -> AsyncIterator[dict]:
         async with self.agent as runnable:
             input = self.__to_input(runnable, messages)
-            astream_event = runnable.astream_events(
+            astream_event = self.astream_events_adapter(runnable.astream_events)(
                 input=input,
                 version="v2",
             )
             async for it in ato_dict(
-                self.stream_adapter.ato_chat_completion_chunk_stream(
-                    astream_event, event_adapter=self.event_adapter
-                )
+                self.stream_adapter.ato_chat_completion_chunk_stream(astream_event)
             ):
                 yield it
 
     async def ainvoke(self, messages: List[ChatCompletionMessage]) -> dict:
         async with self.agent as runnable:
             input = self.__to_input(runnable, messages)
-            result = await runnable.ainvoke(
+            result = await self.ainvoke_adapter(runnable.ainvoke)(
                 input=input,
             )
 
