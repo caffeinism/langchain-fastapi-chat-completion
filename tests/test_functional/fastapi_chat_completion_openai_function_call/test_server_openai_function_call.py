@@ -1,11 +1,11 @@
 import json
-import pytest
-from openai import OpenAI
-from openai.types.chat import ChatCompletionToolParam
-from openai.lib.streaming.chat import ChatCompletionStreamState
-from fastapi.testclient import TestClient
-from server_openai_function_call import app
 
+import pytest
+from fastapi.testclient import TestClient
+from openai import OpenAI
+from openai.lib.streaming.chat import ChatCompletionStreamState
+from openai.types.chat import ChatCompletionToolParam
+from server_openai_function_call import app
 
 test_api = TestClient(app)
 
@@ -20,36 +20,38 @@ def openai_client():
 
 @pytest.fixture
 def tools():
-    return [{
-        "type": "function",
-        "function": {
-            "name": "get_weather",
-            "description": "Get current temperature for a given location.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "location": {
-                        "type": "string",
-                        "description": "City and country e.g. Bogotá, Colombia"
-                    }
+    return [
+        {
+            "type": "function",
+            "function": {
+                "name": "get_weather",
+                "description": "Get current temperature for a given location.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "location": {
+                            "type": "string",
+                            "description": "City and country e.g. Bogotá, Colombia",
+                        }
+                    },
+                    "required": ["location"],
+                    "additionalProperties": False,
                 },
-                "required": [
-                    "location"
-                ],
-                "additionalProperties": False
+                "strict": True,
             },
-            "strict": True
         }
-    }]
+    ]
 
 
-def test_chat_completion_function_call_weather(openai_client: OpenAI, tools: list[ChatCompletionToolParam]):
+def test_chat_completion_function_call_weather(
+    openai_client: OpenAI, tools: list[ChatCompletionToolParam]
+):
     chat_completion = openai_client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
             {
                 "role": "user",
-                "content": 'What is the weather like in London today?',
+                "content": "What is the weather like in London today?",
             }
         ],
         tools=tools,
@@ -57,19 +59,25 @@ def test_chat_completion_function_call_weather(openai_client: OpenAI, tools: lis
     )
 
     assert chat_completion.choices[0].finish_reason == "tool_calls"
-    assert chat_completion.choices[0].message.tool_calls[0].function.name == "get_weather"
+    assert (
+        chat_completion.choices[0].message.tool_calls[0].function.name == "get_weather"
+    )
 
-    args = json.loads(chat_completion.choices[0].message.tool_calls[0].function.arguments)
+    args = json.loads(
+        chat_completion.choices[0].message.tool_calls[0].function.arguments
+    )
     assert "london" in args["location"].lower()
 
 
-def test_chat_completion_function_call_weather_stream(openai_client: OpenAI, tools: list[ChatCompletionToolParam]):
+def test_chat_completion_function_call_weather_stream(
+    openai_client: OpenAI, tools: list[ChatCompletionToolParam]
+):
     chunks = openai_client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
             {
                 "role": "user",
-                "content": 'What is the weather like in London today?',
+                "content": "What is the weather like in London today?",
             }
         ],
         tools=tools,
@@ -91,13 +99,15 @@ def test_chat_completion_function_call_weather_stream(openai_client: OpenAI, too
     assert "london" in args["location"].lower()
 
 
-def test_chat_completion_function_call_not_called(openai_client: OpenAI, tools: list[ChatCompletionToolParam]):
+def test_chat_completion_function_call_not_called(
+    openai_client: OpenAI, tools: list[ChatCompletionToolParam]
+):
     chat_completion = openai_client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
             {
                 "role": "user",
-                "content": 'Hello!',
+                "content": "Hello!",
             }
         ],
         tools=tools,

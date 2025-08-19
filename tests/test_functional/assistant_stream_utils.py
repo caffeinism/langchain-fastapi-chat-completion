@@ -1,4 +1,5 @@
 from typing import List
+
 from openai import OpenAI, Stream
 from openai.types.beta import AssistantStreamEvent
 

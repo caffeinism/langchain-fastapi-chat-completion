@@ -1,20 +1,20 @@
 import functools
 import operator
 from datetime import datetime
-from typing import TypedDict, Annotated, Sequence
-from langchain.agents import create_openai_tools_agent, AgentExecutor
-from langchain_core.messages import HumanMessage, BaseMessage
+from typing import Annotated, Sequence, TypedDict
+
+from langchain.agents import AgentExecutor, create_openai_tools_agent
+from langchain_core.messages import BaseMessage, HumanMessage
 from langchain_core.output_parsers.openai_functions import JsonOutputFunctionsParser
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.runnables import Runnable, RunnableConfig
 from langchain_core.tools import Tool
 from langchain_openai import ChatOpenAI
-from langgraph.constants import START, END
+from langgraph.constants import END, START
 from langgraph.graph import StateGraph
 
-from langchain_openai_api_bridge.core.base_agent_factory import BaseAgentFactory
-from langchain_openai_api_bridge.core.create_agent_dto import CreateAgentDto
-
+from langchain_fastapi_chat_completion.core.base_agent_factory import BaseAgentFactory
+from langchain_fastapi_chat_completion.core.create_agent_dto import CreateAgentDto
 
 # Define a new tool that returns the current datetime
 datetime_tool = Tool(

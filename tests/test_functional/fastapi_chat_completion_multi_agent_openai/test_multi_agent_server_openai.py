@@ -1,7 +1,7 @@
 import pytest
-from openai import OpenAI
 from fastapi.testclient import TestClient
 from multi_agent_server_openai import app
+from openai import OpenAI
 
 test_api = TestClient(app)
 
@@ -20,7 +20,7 @@ def test_chat_completion_invoke(openai_client):
         messages=[
             {
                 "role": "user",
-                "content": 'What time is it?',
+                "content": "What time is it?",
             }
         ],
     )
@@ -30,7 +30,7 @@ def test_chat_completion_invoke(openai_client):
 def test_chat_completion_stream(openai_client):
     chunks = openai_client.chat.completions.create(
         model="gpt-4o-mini",
-        messages=[{"role": "user", "content": 'How does photosynthesis work?'}],
+        messages=[{"role": "user", "content": "How does photosynthesis work?"}],
         stream=True,
     )
     every_content = []

@@ -1,13 +1,13 @@
+import uvicorn
+from dotenv import find_dotenv, load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from dotenv import load_dotenv, find_dotenv
-import uvicorn
+from langchain_openai import ChatOpenAI
 
-from langchain_openai_api_bridge.core.create_agent_dto import CreateAgentDto
-from langchain_openai_api_bridge.fastapi.langchain_openai_api_bridge_fastapi import (
+from langchain_fastapi_chat_completion.core.create_agent_dto import CreateAgentDto
+from langchain_fastapi_chat_completion.fastapi.langchain_openai_api_bridge_fastapi import (
     LangchainOpenaiApiBridgeFastAPI,
 )
-from langchain_openai import ChatOpenAI
 
 _ = load_dotenv(find_dotenv())
 

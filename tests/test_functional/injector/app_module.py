@@ -1,14 +1,14 @@
 from injector import Binder, Module, singleton
 
-from langchain_openai_api_bridge.assistant import (
-    ThreadRepository,
-    MessageRepository,
-    RunRepository,
-    InMemoryThreadRepository,
+from langchain_fastapi_chat_completion.assistant import (
     InMemoryMessageRepository,
     InMemoryRunRepository,
+    InMemoryThreadRepository,
+    MessageRepository,
+    RunRepository,
+    ThreadRepository,
 )
-from langchain_openai_api_bridge.core import BaseAgentFactory
+from langchain_fastapi_chat_completion.core import BaseAgentFactory
 from tests.test_functional.injector.with_injector_my_agent_factory import (
     WithInjectorMyAgentFactory,
 )

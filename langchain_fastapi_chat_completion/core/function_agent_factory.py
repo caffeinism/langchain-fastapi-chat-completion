@@ -1,0 +1,20 @@
+from typing import Callable
+
+from langchain_core.runnables import Runnable
+
+from langchain_fastapi_chat_completion.core.base_agent_factory import (
+    BaseAgentFactory,
+    PotentiallyRunnable,
+)
+from langchain_fastapi_chat_completion.core.create_agent_dto import CreateAgentDto
+
+
+class FunctionAgentFactory(BaseAgentFactory):
+    def __init__(
+        self,
+        fn: Callable[[CreateAgentDto], Runnable],
+    ) -> None:
+        self.fn = fn
+
+    def create_agent(self, dto: CreateAgentDto) -> PotentiallyRunnable:
+        return self.fn(dto)

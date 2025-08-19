@@ -1,6 +1,6 @@
 # LangChain OpenAI API Bridge
 
-[![PyPI version](https://badge.fury.io/py/langchain-openai-api-bridge.svg)](https://badge.fury.io/py/langchain-openai-api-bridge) [![Downloads](https://pepy.tech/badge/langchain-openai-api-bridge)](https://pepy.tech/project/langchain-openai-api-bridge)
+[![PyPI version](https://badge.fury.io/py/langchain-fastapi-chat-completion.svg)](https://badge.fury.io/py/langchain-fastapi-chat-completion) [![Downloads](https://pepy.tech/badge/langchain-fastapi-chat-completion)](https://pepy.tech/project/langchain-fastapi-chat-completion)
 
 🚀 Expose [LangChain](https://github.com/langchain-ai/langchain) Agent ([LangGraph](https://github.com/langchain-ai/langgraph)) result as an OpenAI-compatible API 🚀
 
@@ -61,13 +61,13 @@ If you find this project useful, please give it a star ⭐!
 ##### pip
 
 ```bash
-pip install langchain-openai-api-bridge
+pip install langchain-fastapi-chat-completion
 ```
 
 ##### poetry
 
 ```bash
-poetry add langchain-openai-api-bridge
+poetry add langchain-fastapi-chat-completion
 ```
 
 ## Usage
@@ -82,12 +82,12 @@ from fastapi import FastAPI
 from dotenv import load_dotenv, find_dotenv
 import uvicorn
 
-from langchain_openai_api_bridge.assistant import (
+from langchain_fastapi_chat_completion.assistant import (
     InMemoryMessageRepository,
     InMemoryRunRepository,
     InMemoryThreadRepository,
 )
-from langchain_openai_api_bridge.fastapi.langchain_openai_api_bridge_fastapi import (
+from langchain_fastapi_chat_completion.fastapi.langchain_fastapi_chat_completion_fastapi import (
     LangchainOpenaiApiBridgeFastAPI,
 )
 from tests.test_functional.fastapi_assistant_agent_openai.my_agent_factory import (
@@ -162,13 +162,13 @@ Full example:
 ```python
 # Server
 
-from langchain_openai_api_bridge.assistant import (
+from langchain_fastapi_chat_completion.assistant import (
     AssistantApp,
     InMemoryMessageRepository,
     InMemoryRunRepository,
     InMemoryThreadRepository,
 )
-from langchain_openai_api_bridge.fastapi import include_chat_completion
+from langchain_fastapi_chat_completion.fastapi import include_chat_completion
 
 app = FastAPI(
     title="LangChain Agent OpenAI API Bridge",

@@ -1,4 +1,4 @@
-from langchain_core.runnables.schema import StandardStreamEvent, EventData
+from langchain_core.runnables.schema import EventData, StandardStreamEvent
 
 
 class ChunkStub:

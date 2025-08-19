@@ -1,6 +1,6 @@
-from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 
-from langchain_openai_api_bridge.chat_model_adapter.llamacpp.llamacpp_openai_compatible_chat_model_adapter import (
+from langchain_fastapi_chat_completion.chat_model_adapter.llamacpp.llamacpp_openai_compatible_chat_model_adapter import (
     LlamacppOpenAICompatibleChatModelAdapter,
 )
 

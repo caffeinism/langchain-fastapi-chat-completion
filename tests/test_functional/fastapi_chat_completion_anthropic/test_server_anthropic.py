@@ -1,8 +1,7 @@
 import pytest
-from openai import OpenAI
 from fastapi.testclient import TestClient
+from openai import OpenAI
 from server_anthropic import app
-
 
 test_api = TestClient(app)
 

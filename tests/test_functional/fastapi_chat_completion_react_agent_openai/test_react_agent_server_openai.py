@@ -1,8 +1,7 @@
 import pytest
-from openai import OpenAI
 from fastapi.testclient import TestClient
+from openai import OpenAI
 from react_agent_server_openai import app
-
 
 test_api = TestClient(app)
 

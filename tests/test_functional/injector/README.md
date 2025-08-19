@@ -10,13 +10,13 @@ from dotenv import load_dotenv, find_dotenv
 import uvicorn
 from injector import Injector
 
-from langchain_openai_api_bridge.assistant import (
+from langchain_fastapi_chat_completion.assistant import (
     ThreadRepository,
     MessageRepository,
     RunRepository,
 )
-from langchain_openai_api_bridge.core.agent_factory import AgentFactory
-from langchain_openai_api_bridge.fastapi import (
+from langchain_fastapi_chat_completion.core.agent_factory import AgentFactory
+from langchain_fastapi_chat_completion.fastapi import (
     LangchainOpenaiApiBridgeFastAPI,
 )
 from tests.test_functional.injector.app_module import MyAppModule
@@ -52,7 +52,7 @@ if __name__ == "__main__":
 # app_module.py
 from injector import Binder, Module, singleton
 
-from langchain_openai_api_bridge.assistant import (
+from langchain_fastapi_chat_completion.assistant import (
     ThreadRepository,
     MessageRepository,
     RunRepository,
@@ -60,7 +60,7 @@ from langchain_openai_api_bridge.assistant import (
     InMemoryMessageRepository,
     InMemoryRunRepository,
 )
-from langchain_openai_api_bridge.core import AgentFactory
+from langchain_fastapi_chat_completion.core import AgentFactory
 from tests.test_functional.injector.with_injector_my_agent_factory import (
     WithInjectorMyAgentFactory,
 )

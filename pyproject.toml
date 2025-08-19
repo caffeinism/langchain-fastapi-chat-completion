@@ -1,14 +1,14 @@
 [tool.poetry]
-name = "langchain-openai-api-bridge"
+name = "langchain-fastapi-chat-completion"
 version = "1.0.0"
-description = "A bridge to use Langchain output as an OpenAI-compatible API."
-authors = ["Samuel Magny <samuelint@gmail.com>"]
+description = "A bridge to use Langchain output as an OpenAI chat completion API."
+authors = ["Kim Minjong <make.dirty.code@gmail.com>"]
 license = "MIT"
 readme = "README.md"
-repository = "https://github.com/samuelint/langchain-openai-api-bridge"
+repository = "https://github.com/caffeinism/langchain-fastapi-chat-completion"
 
 [tool.poetry.dependencies]
-python = ">=3.10,<4.0"
+python = ">=3.11,<4.0"
 openai = "^1.93.0"
 pydantic = "~2.8.0"
 
@@ -32,7 +32,6 @@ pytest = "^8.2.2"
 pytest-watch = "^4.2.0"
 decoy = "^2.1.1"
 injector = "^0.21.0"
-llama-cpp-python = "^0.3.9"
 langchain-community = "^0.3.26"
 langchain-experimental = "^0.3.4"
 fastapi-injector = { version = "^0.6.0", python = ">=3.9,<3.13" }

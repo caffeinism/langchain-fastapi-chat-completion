@@ -1,8 +1,8 @@
-from langchain_openai_api_bridge.chat_model_adapter.anthropic.anthropic_openai_compatible_chat_model_adapter import (
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
+
+from langchain_fastapi_chat_completion.chat_model_adapter.anthropic.anthropic_openai_compatible_chat_model_adapter import (
     AnthropicOpenAICompatibleChatModelAdapter,
 )
-
-from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 
 instance = AnthropicOpenAICompatibleChatModelAdapter()
 

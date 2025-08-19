@@ -1,7 +1,7 @@
 name: Publish to PyPI
 
 env:
-  PYPI_PACKAGE_NAME: langchain_openai_api_bridge
+  PYPI_PACKAGE_NAME: langchain_fastapi_chat_completion
 on:
   release:
     types:

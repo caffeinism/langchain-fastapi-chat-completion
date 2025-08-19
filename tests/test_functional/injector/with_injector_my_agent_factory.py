@@ -1,10 +1,10 @@
-from langchain_openai_api_bridge.core.base_agent_factory import BaseAgentFactory
 from langchain_core.runnables import Runnable
 from langchain_core.tools import tool
-from langgraph.prebuilt import create_react_agent
 from langchain_openai import ChatOpenAI
+from langgraph.prebuilt import create_react_agent
 
-from langchain_openai_api_bridge.core.create_agent_dto import CreateAgentDto
+from langchain_fastapi_chat_completion.core.base_agent_factory import BaseAgentFactory
+from langchain_fastapi_chat_completion.core.create_agent_dto import CreateAgentDto
 
 
 @tool

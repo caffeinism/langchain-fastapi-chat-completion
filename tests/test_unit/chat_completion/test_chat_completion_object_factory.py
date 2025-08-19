@@ -1,9 +1,14 @@
 from unittest.mock import patch
 
-from langchain_openai_api_bridge.chat_completion.chat_completion_object_factory import (
+from openai.types.chat.chat_completion import (
+    ChatCompletionMessage,
+    Choice,
+    CompletionUsage,
+)
+
+from langchain_fastapi_chat_completion.chat_completion.chat_completion_object_factory import (
     ChatCompletionObjectFactory,
 )
-from openai.types.chat.chat_completion import Choice, CompletionUsage, ChatCompletionMessage
 
 
 class TestChatCompletionObjectFactory:
@@ -41,7 +46,7 @@ class TestChatCompletionObjectFactory:
         assert result.model == "test-model"
 
     @patch(
-        "langchain_openai_api_bridge.chat_completion.chat_completion_object_factory.time.time",
+        "langchain_fastapi_chat_completion.chat_completion.chat_completion_object_factory.time.time",
         return_value=1638316800,
     )
     def test_created_is_current_time(self, mock_time):
