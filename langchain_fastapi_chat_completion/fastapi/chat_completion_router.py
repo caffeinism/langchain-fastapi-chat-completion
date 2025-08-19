@@ -1,5 +1,8 @@
-from fastapi import APIRouter, Header
-from fastapi.responses import JSONResponse
+import inspect
+from functools import wraps
+
+from fastapi import APIRouter
+from fastapi.responses import JSONResponse, Response
 
 from langchain_fastapi_chat_completion.chat_completion.chat_completion_compatible_api import (
     ChatCompletionCompatibleAPI,
@@ -9,13 +12,9 @@ from langchain_fastapi_chat_completion.chat_completion.http_stream_response_adap
 )
 from langchain_fastapi_chat_completion.core.base_agent_factory import BaseAgentFactory
 from langchain_fastapi_chat_completion.core.create_agent_dto import CreateAgentDto
-from langchain_fastapi_chat_completion.core.types.openai import (
-    OpenAIChatCompletionRequest,
-)
 from langchain_fastapi_chat_completion.core.utils.tiny_di_container import (
     TinyDIContainer,
 )
-from langchain_fastapi_chat_completion.fastapi.token_getter import get_bearer_token
 
 
 def create_chat_completion_router(
@@ -23,34 +22,38 @@ def create_chat_completion_router(
     event_adapter: callable = lambda event: None,
 ):
     chat_completion_router = APIRouter(prefix="/chat")
+    agent_factory = tiny_di_container.resolve(BaseAgentFactory)
 
-    @chat_completion_router.post("/completions")
-    async def assistant_retreive_thread_messages(
-        request: OpenAIChatCompletionRequest, authorization: str = Header(None)
-    ):
-        api_key = get_bearer_token(authorization)
-        agent_factory = tiny_di_container.resolve(BaseAgentFactory)
-        create_agent_dto = CreateAgentDto(
-            model=request.model,
-            api_key=api_key,
-            request=request,
-            tools=request.tools,
-            tool_choice=request.tool_choice,
-            reasoning_effort=request.reasoning_effort,
-        )
+    for key, value in inspect.signature(agent_factory.create_agent).parameters.items():
+        if value.annotation is CreateAgentDto:
+            break
+    else:
+        raise ValueError("You must accept CreateAgentDto as an argument.")
 
-        agent = agent_factory.create_agent_with_async_context(dto=create_agent_dto)
+    @wraps(agent_factory.create_agent)
+    async def _completions(**kwargs) -> JSONResponse:
+        dto: CreateAgentDto = kwargs[key]
+
+        agent = agent_factory.create_agent_with_async_context(**kwargs)
 
         adapter = ChatCompletionCompatibleAPI.from_agent(
-            agent, create_agent_dto.model, event_adapter=event_adapter
+            agent, dto.request.model, event_adapter=event_adapter
         )
 
         response_factory = HttpStreamResponseAdapter()
-        if request.stream is True:
-            stream = adapter.astream(request.messages)
+        if dto.request.stream is True:
+            stream = adapter.astream(dto.request.messages)
             return response_factory.to_streaming_response(stream)
         else:
-            return JSONResponse(content=await adapter.ainvoke(request.messages))
+            return JSONResponse(content=await adapter.ainvoke(dto.request.messages))
+
+    anns = dict(getattr(_completions, "__annotations__", {}))
+    anns["return"] = Response
+    _completions.__annotations__ = anns
+    sig = inspect.signature(_completions)
+    _completions.__signature__ = sig.replace(return_annotation=Response)
+
+    chat_completion_router.post("/completions")(_completions)
 
     return chat_completion_router
 

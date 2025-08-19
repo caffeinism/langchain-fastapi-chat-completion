@@ -31,9 +31,9 @@ class BaseAgentFactory(ABC):
         pass
 
     def create_agent_with_async_context(
-        self, dto: CreateAgentDto
+        self, **kwargs
     ) -> AsyncContextManager[Runnable]:
-        return wrap_agent(self.create_agent(dto))
+        return wrap_agent(self.create_agent(**kwargs))
 
 
 @asynccontextmanager

@@ -10,7 +10,7 @@ class MyAnthropicAgentFactory(BaseAgentFactory):
 
     def create_agent(self, dto: CreateAgentDto) -> Runnable:
         llm = ChatAnthropic(
-            model=dto.model,
+            model=dto.request.model,
             streaming=True,
         )
 

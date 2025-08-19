@@ -1,20 +1,25 @@
-from typing import Optional
+from typing import Annotated, Optional
 
-from openai.types.chat import (
-    ChatCompletionToolChoiceOptionParam,
-    ChatCompletionToolParam,
-)
-from openai.types.shared.reasoning_effort import ReasoningEffort
+from fastapi import Depends, Header
 from pydantic import BaseModel
 
+from langchain_fastapi_chat_completion.core.types.openai import (
+    OpenAIChatCompletionRequest,
+)
+from langchain_fastapi_chat_completion.fastapi.token_getter import get_bearer_token
 
-class CreateAgentDto(BaseModel):
+
+class _CreateAgentDto(BaseModel):
+    request: OpenAIChatCompletionRequest
     api_key: Optional[str] = None
-    model: Optional[str] = None
-    temperature: float = 0.7
-    max_tokens: Optional[int] = None
-    assistant_id: Optional[str] = ""
-    thread_id: Optional[str] = ""
-    tools: list[ChatCompletionToolParam] = []
-    tool_choice: ChatCompletionToolChoiceOptionParam = "none"
-    reasoning_effort: ReasoningEffort = None
+
+
+async def get_dto(
+    chat_completion_request: OpenAIChatCompletionRequest,
+    authorization: str = Header(None),
+):
+    api_key = get_bearer_token(authorization)
+    return CreateAgentDto(request=chat_completion_request, api_key=api_key)
+
+
+CreateAgentDto = Annotated[_CreateAgentDto, Depends(get_dto)]
