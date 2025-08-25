@@ -92,10 +92,14 @@ def test_chat_completion_function_call_weather_stream(
     chat_completion = state.get_final_completion()
 
     assert chat_completion.choices[0].finish_reason == "tool_calls"
-    assert chat_completion.choices[0].message.function_call.name == "get_weather"
+    assert (
+        chat_completion.choices[0].message.tool_calls[0].function.name == "get_weather"
+    )
     assert chat_completion.choices[0].message.role == "assistant"
 
-    args = json.loads(chat_completion.choices[0].message.function_call.arguments)
+    args = json.loads(
+        chat_completion.choices[0].message.tool_calls[0].function.arguments
+    )
     assert "london" in args["location"].lower()
 
 

@@ -3,10 +3,8 @@ from typing import Annotated, Optional
 from fastapi import Depends, Header
 from pydantic import BaseModel
 
-from langchain_fastapi_chat_completion.core.types.openai import (
-    OpenAIChatCompletionRequest,
-)
-from langchain_fastapi_chat_completion.fastapi.token_getter import get_bearer_token
+from ..fastapi.token_getter import get_bearer_token
+from .types.openai import OpenAIChatCompletionRequest
 
 
 class _CreateAgentDto(BaseModel):

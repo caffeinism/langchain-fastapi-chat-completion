@@ -12,8 +12,6 @@ from typing import (
 
 from langchain_core.runnables import Runnable
 
-from langchain_fastapi_chat_completion.core.create_agent_dto import CreateAgentDto
-
 PotentiallyRunnable = Union[
     Runnable,
     Awaitable[Runnable],
@@ -27,7 +25,7 @@ PotentiallyRunnable = Union[
 class BaseAgentFactory(ABC):
 
     @abstractmethod
-    def create_agent(self, dto: CreateAgentDto) -> PotentiallyRunnable:
+    def create_agent(self, dto: "CreateAgentDto") -> PotentiallyRunnable:
         pass
 
     def create_agent_with_async_context(

@@ -1,11 +1,13 @@
 from typing import Optional
 
+from langchain_core.messages import BaseMessageChunk
 from langchain_core.runnables.schema import StreamEvent
 from openai.types.chat.chat_completion_chunk import (
     ChatCompletionChunk,
     Choice,
     ChoiceDelta,
-    ChoiceDeltaFunctionCall,
+    ChoiceDeltaToolCall,
+    ChoiceDeltaToolCallFunction,
 )
 
 from langchain_fastapi_chat_completion.chat_completion.chat_completion_chunk_object_factory import (
@@ -14,31 +16,41 @@ from langchain_fastapi_chat_completion.chat_completion.chat_completion_chunk_obj
 
 
 def to_openai_chat_message(
-    event: StreamEvent,
-    role: str = "assistant",
+    chunk: BaseMessageChunk,
+    role: str | None = None,
 ) -> ChoiceDelta:
-    if getattr(event["data"]["chunk"], "tool_call_chunks", None):
-        function_call = ChoiceDeltaFunctionCall(
-            name=event["data"]["chunk"].tool_call_chunks[0]["name"],
-            arguments=event["data"]["chunk"].tool_call_chunks[0]["args"],
-        )
+    if getattr(chunk, "tool_call_chunks", None):
+        tool_calls = [
+            ChoiceDeltaToolCall(
+                id=tool_call_chunk["id"],
+                index=tool_call_chunk["index"],
+                function=ChoiceDeltaToolCallFunction(
+                    arguments=tool_call_chunk["args"],
+                    name=tool_call_chunk["name"],
+                ),
+                type="function",
+            )
+            for tool_call_chunk in chunk.tool_call_chunks
+        ]
+    elif getattr(chunk, "tool_call_id", None):
+        tool_calls = [ChoiceDeltaToolCall(id=chunk.tool_call_id, index=0)]
     else:
-        function_call = None
+        tool_calls = None
 
     return ChoiceDelta(
-        content=event["data"]["chunk"].content,
+        content=chunk.content,
         role=role,
-        function_call=function_call,
+        tool_calls=tool_calls,
     )
 
 
 def to_openai_chat_completion_chunk_choice(
-    event: StreamEvent,
+    chunk: BaseMessageChunk,
     index: int = 0,
     role: Optional[str] = None,
     finish_reason: Optional[str] = None,
 ) -> Choice:
-    message = to_openai_chat_message(event, role)
+    message = to_openai_chat_message(chunk, role)
 
     return Choice(
         index=index,
@@ -48,7 +60,7 @@ def to_openai_chat_completion_chunk_choice(
 
 
 def to_openai_chat_completion_chunk_object(
-    event: StreamEvent,
+    chunk: BaseMessageChunk,
     id: str = "",
     model: str = "",
     system_fingerprint: Optional[str] = None,
@@ -57,7 +69,7 @@ def to_openai_chat_completion_chunk_object(
 ) -> ChatCompletionChunk:
 
     choice1 = to_openai_chat_completion_chunk_choice(
-        event, index=0, role=role, finish_reason=finish_reason
+        chunk, index=0, role=role, finish_reason=finish_reason
     )
 
     return create_chat_completion_chunk_object(

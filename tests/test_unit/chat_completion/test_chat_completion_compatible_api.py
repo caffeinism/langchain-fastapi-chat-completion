@@ -10,7 +10,10 @@ from langchain_fastapi_chat_completion.chat_completion.chat_completion_compatibl
 )
 from langchain_fastapi_chat_completion.core.base_agent_factory import wrap_agent
 from tests.stream_utils import assemble_stream, generate_stream
-from tests.test_unit.core.agent_stream_utils import create_on_chat_model_stream_event
+from tests.test_unit.core.agent_stream_utils import (
+    create_on_chat_model_end_event,
+    create_on_chat_model_stream_event,
+)
 
 some_llm_model = "gpt-4o-mini"
 some_messages = [ChatCompletionUserMessageParam(role="user", content="hello")]
@@ -63,10 +66,13 @@ class TestAStream:
     ):
         on_chat_model_stream_event1 = create_on_chat_model_stream_event(content="hello")
         on_chat_model_stream_event2 = create_on_chat_model_stream_event(content="moto")
+        on_chat_model_stream_event3 = create_on_chat_model_end_event()
+
         agent.astream_events.return_value = generate_stream(
             [
                 on_chat_model_stream_event1,
                 on_chat_model_stream_event2,
+                on_chat_model_stream_event3,
             ]
         )
 

@@ -11,11 +11,10 @@ from langchain_fastapi_chat_completion.chat_completion.chat_completion_compatibl
 from langchain_fastapi_chat_completion.chat_completion.http_stream_response_adapter import (
     HttpStreamResponseAdapter,
 )
-from langchain_fastapi_chat_completion.core.base_agent_factory import BaseAgentFactory
-from langchain_fastapi_chat_completion.core.create_agent_dto import CreateAgentDto
-from langchain_fastapi_chat_completion.core.utils.tiny_di_container import (
-    TinyDIContainer,
-)
+
+from ..core.base_agent_factory import BaseAgentFactory
+from ..core.create_agent_dto import CreateAgentDto
+from ..core.utils.tiny_di_container import TinyDIContainer
 
 
 def create_chat_completion_router(
