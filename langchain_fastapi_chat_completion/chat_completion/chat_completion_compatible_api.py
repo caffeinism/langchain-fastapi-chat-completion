@@ -73,6 +73,10 @@ class ChatCompletionCompatibleAPI:
         )
 
     def __to_input(self, runnable: Runnable, messages: List[ChatCompletionMessage]):
+        for message in messages:
+            if "content" not in message:
+                message["content"] = ""
+
         if isinstance(runnable, CompiledStateGraph):
             return self.__to_react_agent_input(messages)
         else:
