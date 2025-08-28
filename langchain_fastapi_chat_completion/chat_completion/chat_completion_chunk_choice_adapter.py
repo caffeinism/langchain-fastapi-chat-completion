@@ -1,4 +1,5 @@
 from typing import Optional
+from uuid import uuid4
 
 from langchain_core.messages import BaseMessageChunk
 from langchain_core.runnables.schema import StreamEvent
@@ -22,8 +23,8 @@ def to_openai_chat_message(
     if getattr(chunk, "tool_call_chunks", None):
         tool_calls = [
             ChoiceDeltaToolCall(
-                id=tool_call_chunk["id"],
-                index=tool_call_chunk["index"],
+                id=tool_call_chunk["id"] or str(uuid4()),
+                index=tool_call_chunk["index"] or 0,
                 function=ChoiceDeltaToolCallFunction(
                     arguments=tool_call_chunk["args"],
                     name=tool_call_chunk["name"],

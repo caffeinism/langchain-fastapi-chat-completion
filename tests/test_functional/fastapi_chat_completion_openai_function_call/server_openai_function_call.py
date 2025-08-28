@@ -30,12 +30,12 @@ app.add_middleware(
 
 def create_agent(dto: CreateAgentDto):
     llm = ChatOpenAI(
-        temperature=dto.request.temperature or 0.7,
-        model=dto.request.model,
-        max_tokens=dto.request.max_tokens,
+        temperature=dto.request.get("temperature") or 0.7,
+        model=dto.request.get("model"),
+        max_tokens=dto.request.get("max_tokens"),
         api_key=dto.api_key,
     )
-    return llm.bind_tools(dto.request.tools)
+    return llm.bind_tools(dto.request.get("tools"))
 
 
 bridge = LangchainOpenaiApiBridgeFastAPI(app=app, agent_factory_provider=create_agent)

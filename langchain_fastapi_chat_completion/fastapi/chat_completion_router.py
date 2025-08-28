@@ -3,6 +3,7 @@ from functools import wraps
 from typing import Callable
 
 from fastapi import APIRouter
+from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse, Response
 
 from langchain_fastapi_chat_completion.chat_completion.chat_completion_compatible_api import (
@@ -35,22 +36,24 @@ def create_chat_completion_router(
     @wraps(agent_factory.create_agent)
     async def _completions(**kwargs) -> JSONResponse:
         dto: CreateAgentDto = kwargs[key]
-
+        dto.request = jsonable_encoder(dto.request)
         agent = agent_factory.create_agent_with_async_context(**kwargs)
 
         adapter = ChatCompletionCompatibleAPI.from_agent(
             agent,
-            dto.request.model,
+            dto.request.get("model"),
             ainvoke_adapter=ainvoke_adapter,
             astream_events_adapter=astream_events_adapter,
         )
 
         response_factory = HttpStreamResponseAdapter()
-        if dto.request.stream is True:
-            stream = adapter.astream(dto.request.messages)
+        if dto.request.get("stream") is True:
+            stream = adapter.astream(dto.request.get("messages"))
             return response_factory.to_streaming_response(stream)
         else:
-            return JSONResponse(content=await adapter.ainvoke(dto.request.messages))
+            return JSONResponse(
+                content=await adapter.ainvoke(dto.request.get("messages"))
+            )
 
     anns = dict(getattr(_completions, "__annotations__", {}))
     anns["return"] = Response

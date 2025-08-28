@@ -17,10 +17,10 @@ class MyOpenAIReactAgentFactory(BaseAgentFactory):
 
     def create_agent(self, dto: CreateAgentDto) -> Runnable:
         llm = ChatOpenAI(
-            model=dto.request.model,
+            model=dto.request.get("model"),
             api_key=dto.api_key,
             streaming=True,
-            temperature=dto.request.temperature,
+            temperature=dto.request.get("temperature"),
         )
 
         return create_react_agent(

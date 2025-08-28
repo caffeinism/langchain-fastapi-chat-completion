@@ -28,37 +28,35 @@ from pydantic import BaseModel
 class OpenAIChatCompletionRequest(BaseModel):
     messages: list[ChatCompletionMessageParam]
     model: Union[str, ChatModel]
-    audio: Optional[ChatCompletionAudioParam] | None = None
-    frequency_penalty: Optional[float] | None = None
+    audio: ChatCompletionAudioParam | None = None
+    frequency_penalty: float | None = None
     function_call: completion_create_params.FunctionCall | None = None
     functions: list[completion_create_params.Function] | None = None
-    logit_bias: Optional[Dict[str, int]] | None = None
-    logprobs: Optional[bool] | None = None
-    max_completion_tokens: Optional[int] | None = None
-    max_tokens: Optional[int] | None = None
-    metadata: Optional[Metadata] | None = None
-    modalities: Optional[List[Literal["text", "audio"]]] | None = None
-    n: Optional[int] | None = None
+    logit_bias: Dict[str, int] | None = None
+    logprobs: bool | None = None
+    max_completion_tokens: int | None = None
+    max_tokens: int | None = None
+    metadata: Metadata | None = None
+    modalities: List[Literal["text", "audio"]] | None = None
+    n: int | None = None
     parallel_tool_calls: bool | None = None
-    prediction: Optional[ChatCompletionPredictionContentParam] | None = None
-    presence_penalty: Optional[float] | None = None
+    prediction: ChatCompletionPredictionContentParam | None = None
+    presence_penalty: float | None = None
     prompt_cache_key: str | None = None
-    reasoning_effort: Optional[ReasoningEffort] | None = None
+    reasoning_effort: ReasoningEffort | None = None
     response_format: completion_create_params.ResponseFormat | None = None
     safety_identifier: str | None = None
-    seed: Optional[int] | None = None
-    service_tier: (
-        Optional[Literal["auto", "default", "flex", "scale", "priority"]] | None
-    ) = None
-    stop: Union[Optional[str], List[str], None] | None = None
-    store: Optional[bool] | None = None
-    stream: Optional[bool] | None = None
-    stream_options: Optional[ChatCompletionStreamOptionsParam] | None = None
-    temperature: Optional[float] | None = None
+    seed: int | None = None
+    service_tier: Literal["auto", "default", "flex", "scale", "priority"] | None = None
+    stop: Union[str] | List[str] | None = None
+    store: bool | None = None
+    stream: bool | None = None
+    stream_options: ChatCompletionStreamOptionsParam | None = None
+    temperature: float | None = None
     tool_choice: ChatCompletionToolChoiceOptionParam | None = None
     tools: list[ChatCompletionToolParam] | None = None
-    top_logprobs: Optional[int] | None = None
-    top_p: Optional[float] | None = None
+    top_logprobs: int | None = None
+    top_p: float | None = None
     user: str | None = None
-    verbosity: Optional[Literal["low", "medium", "high"]] | None = None
+    verbosity: Literal["low", "medium", "high"] | None = None
     web_search_options: completion_create_params.WebSearchOptions | None = None

@@ -68,7 +68,9 @@ class ChatCompletionCompatibleAPI:
                 input=input,
             )
 
-        return self.invoke_adapter.to_chat_completion_object(result).model_dump()
+        return self.invoke_adapter.to_chat_completion_object(result).model_dump(
+            mode="json"
+        )
 
     def __to_input(self, runnable: Runnable, messages: List[ChatCompletionMessage]):
         if isinstance(runnable, CompiledStateGraph):
