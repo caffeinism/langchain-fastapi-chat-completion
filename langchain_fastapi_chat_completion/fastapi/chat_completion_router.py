@@ -12,6 +12,7 @@ from langchain_fastapi_chat_completion.chat_completion.chat_completion_compatibl
 from langchain_fastapi_chat_completion.chat_completion.http_stream_response_adapter import (
     HttpStreamResponseAdapter,
 )
+from langchain_fastapi_chat_completion.core.utils.async_iterator import apreactivate
 
 from ..core.base_agent_factory import BaseAgentFactory
 from ..core.create_agent_dto import CreateAgentDto
@@ -48,7 +49,7 @@ def create_chat_completion_router(
 
         response_factory = HttpStreamResponseAdapter()
         if dto.request.get("stream") is True:
-            stream = adapter.astream(dto.request.get("messages"))
+            stream = await apreactivate(adapter.astream(dto.request.get("messages")))
             return response_factory.to_streaming_response(stream)
         else:
             return JSONResponse(
