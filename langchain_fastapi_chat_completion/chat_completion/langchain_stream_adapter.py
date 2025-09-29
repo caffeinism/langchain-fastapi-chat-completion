@@ -40,35 +40,37 @@ class LangchainStreamAdapter:
         is_tool_call = False
         role = NOT_GIVEN
         async for event in astream_event:
-            kind = event["event"]
-            if kind == "on_chat_model_stream":
-                chunk: AIMessageChunk = event["data"]["chunk"]
-                if role is NOT_GIVEN:
-                    role = "assistant"
+            match event["event"]:
+                case "on_chat_model_stream":
+                    chunk: AIMessageChunk = event["data"]["chunk"]
+                    if role is NOT_GIVEN:
+                        role = "assistant"
 
-                chat_completion_chunk = to_openai_chat_completion_chunk_object(
-                    chunk=chunk,
-                    id=id,
-                    model=self.llm_model,
-                    system_fingerprint=self.system_fingerprint,
-                    role=role,
-                    finish_reason=None,
-                )
-                role = None
-                yield chat_completion_chunk
-                is_tool_call = is_tool_call or any(
-                    choice.delta.tool_calls for choice in chat_completion_chunk.choices
-                )
-            elif kind == "on_chat_model_end":
-                role = NOT_GIVEN
-                yield create_final_chat_completion_chunk_object(
-                    id=id,
-                    model=self.llm_model,
-                    finish_reason="tool_calls" if is_tool_call else "stop",
-                )
-                is_tool_call = False
-            elif kind == "on_chain_end":
-                if event["name"] == "tools":
+                    chat_completion_chunk = to_openai_chat_completion_chunk_object(
+                        chunk=chunk,
+                        id=id,
+                        model=self.llm_model,
+                        system_fingerprint=self.system_fingerprint,
+                        role=role,
+                        finish_reason=None,
+                    )
+                    role = None
+                    yield chat_completion_chunk
+                    is_tool_call = is_tool_call or any(
+                        choice.delta.tool_calls
+                        for choice in chat_completion_chunk.choices
+                    )
+                case "on_chat_model_end":
+                    role = NOT_GIVEN
+                    yield create_final_chat_completion_chunk_object(
+                        id=id,
+                        model=self.llm_model,
+                        finish_reason="tool_calls" if is_tool_call else "stop",
+                    )
+                    is_tool_call = False
+                case "on_chain_end":
+                    if event["name"] != "tools":
+                        continue
                     it: ToolMessage
                     for it in event["data"]["output"]["messages"]:
                         chat_completion_chunk = to_openai_chat_completion_chunk_object(
