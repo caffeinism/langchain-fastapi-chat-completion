@@ -1,7 +1,7 @@
 import pytest
 from fastapi import HTTPException
 
-from langchain_fastapi_chat_completion.fastapi.token_getter import get_bearer_token
+from langchain_fastapi_chat_completion.core.create_agent_dto import get_bearer_token
 
 
 class TestGetBearerToken:

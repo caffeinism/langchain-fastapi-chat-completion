@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "langchain-fastapi-chat-completion"
-version = "1.0.8"
+version = "1.0.10"
 description = "A bridge to use Langchain output as an OpenAI chat completion API."
 authors = ["Kim Minjong <make.dirty.code@gmail.com>"]
 license = "MIT"

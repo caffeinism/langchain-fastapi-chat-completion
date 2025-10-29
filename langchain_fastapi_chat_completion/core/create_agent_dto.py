@@ -1,11 +1,15 @@
 from typing import Annotated, Mapping, Optional
 
-from fastapi import Body, Depends, Header, Query, Request
+from fastapi import Depends, Header, HTTPException, Request
 from pydantic import BaseModel
-from starlette.datastructures import Headers, QueryParams
 
-from ..fastapi.token_getter import get_bearer_token
 from .types.openai import OpenAIChatCompletionRequest
+
+
+def get_bearer_token(authorization: Optional[str] = None) -> str:
+    if authorization and authorization.startswith("Bearer "):
+        return authorization[len("Bearer ") :]
+    raise HTTPException(status_code=401, detail="Invalid authorization header")
 
 
 class _CreateAgentDto(BaseModel):
@@ -63,7 +67,7 @@ async def get_dto(
     raw_query = request.query_params
 
     api_key = get_bearer_token(authorization)
-    return CreateAgentDto(
+    return _CreateAgentDto(
         request=chat_completion_request,
         api_key=api_key,
         extra_body=raw_body,
